@@ -65,6 +65,7 @@ class UserType extends AbstractType
                     'class' => 'form-control',
                     'minlength' => 2,
                     'maxlength' => 180,
+                    'readonly' => "true"
                 ],
                 'label' => 'Email',
                 'label_attr' => [
@@ -78,10 +79,11 @@ class UserType extends AbstractType
                     new Assert\Email([
                         'message' => 'Veuillez saisir une adresse email valide',
                     ]),
+
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'S\'inscrire',
+                'label' => 'Valider',
                 'attr' => [
                     'class' => 'btn btn-primary mt-2'
                 ]
