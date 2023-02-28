@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Les articles {% endblock %}
+
+{% block body %}
+
+    <div class="container mt-4">
+        <h4>Modifier l'article : {{ article.name}} </h4>
+    </div>
+
+    {{ form(form) }}
+
+{% endblock %}

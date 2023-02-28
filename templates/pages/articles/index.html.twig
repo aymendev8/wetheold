@@ -6,6 +6,13 @@
 
     <div class="container mt-4">
         <h2 class="mt-4 mb-4">Les articles</h2>
+        <div class="container mt-4">
+            {% for message in app.flashes('success') %}
+                <div class ="alert alert-success mt-4 ">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
         {% if articles is not empty  %}
             <div class="count mt-4 mb-4">
                 Il y a {{ articles.getTotalItemCount }} articles au total
@@ -28,8 +35,8 @@
                         <th>{{ article.name }}</th>
                         <td>{{ article.marque }}</td>
                         <td>{{ article.prix }}$</td>
-                        <td> <a href="#" class="btn btn-outline-success">Modifier</a> </td>
-                        <td> <a href="#" class="btn btn-danger">Supprimer</a> </td>
+                        <td> <a href="{{ path('articles.update', {id : article.id}) }}" class="btn btn-outline-success">Modifier</a> </td>
+                        <td> <a href="{{ path('articles.delete', {id : article.id}) }}" class="btn btn-danger">Supprimer</a> </td>
                     </tr>
                 {% endfor %}
                 </tbody>
