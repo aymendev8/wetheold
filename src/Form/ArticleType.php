@@ -37,10 +37,10 @@ class ArticleType extends AbstractType
                     ]),
                 ]
             ])
-            ->add('imageName', FileType::class, [
+            ->add('imageFile', FileType::class, [
                 'label' => 'Image',
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control' ,
                     'minlength' => 2,
                     'maxlength' => 255,
                 ],

@@ -45,6 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\OneToOne(mappedBy: 'id_user', cascade: ['persist', 'remove'])]
+    private ?Cart $cart = null;
+
 
     /**
      * @return null
@@ -170,6 +173,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword($plainPassword): void
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    public function getcard(): ?Cart
+    {
+        return $this->cart;
+    }
+
+    public function setcart(Cart $cart): self
+    {
+        // set the owning side of the relation if necessary
+        if ($cart->getIdUser() !== $this) {
+            $cart->setIdUser($this);
+        }
+
+        $this->cart = $cart;
+
+        return $this;
     }
 
 }
