@@ -6,8 +6,10 @@
 
     <div class="container mt-4">
         <h4>Modifier l'article : {{ article.name}} </h4>
+        <a href="{{ path("articles.read") }}">revenir a la liste des articles </a>
+        <div class="article_image">
+            <img src="{{ vich_uploader_asset(article, 'imageFile') }}">
+        </div>
+        {{ form(form) }}
     </div>
-
-    {{ form(form) }}
-
 {% endblock %}

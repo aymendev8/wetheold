@@ -12,6 +12,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
 class ArticleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -37,7 +39,7 @@ class ArticleType extends AbstractType
                     ]),
                 ]
             ])
-            ->add('imageFile', FileType::class, [
+            ->add('imageFile', VichFileType::class, [
                 'label' => 'Image',
                 'attr' => [
                     'class' => 'form-control' ,
@@ -47,15 +49,7 @@ class ArticleType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label mt-2'
                 ],
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Veuillez saisir une image',
-                    ]),
-                    new Assert\Length([
-                        'min' => 2,
-                        'max' => 255
-                    ]),
-                ]
+                'required' => false
             ])
             ->add('marque', TextType::class, [
                 'label' => 'Marque',

@@ -72,6 +72,7 @@ class ArticlesController extends AbstractController
         $form = $this->createForm(ArticleType::class);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $article = $form->getData();
             $manager->persist($article);
             $manager->flush();
             $this->addFlash('success', 'Votre article a bien été ajouté');
