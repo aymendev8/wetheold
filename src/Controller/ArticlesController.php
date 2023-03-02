@@ -83,4 +83,15 @@ class ArticlesController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    #[Route('/articles/{id}', name: 'articles.show')]
+    public function show(Articles $article): Response
+    {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('security.login');
+        }
+        return $this->render('pages/articles/show.html.twig', [
+            'article' => $article
+        ]);
+    }
 }
