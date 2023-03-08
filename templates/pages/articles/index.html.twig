@@ -18,32 +18,58 @@
                <p> Il y a {{ articles.getTotalItemCount }} articles au total </p>
                 <a href="{{ path('articles.create') }}"> créer un nouvelle article </a>
             </div>
-            <table class="table table-hover">
-                <thead>
-                <tr class="table-dark">
-                    <th scope="col">ID</th>
-                    <th scope="col">Nom de l'article</th>
-                    <th scope="col">Marque</th>
-                    <th scope="col">Prix</th>
-                    <th scope="col">Modifier</th>
-                    <th scope="col">Supprimer</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for article in articles %}
-                    <tr class="table-primary">
-                        <th scope="row">{{ article.id }}</th>
-                        <th>{{ article.name }}</th>
-                        <td>{{ article.marque }}</td>
-                        <td>{{ article.prix }}$</td>
-                        <td> <a href="{{ path('articles.update', {id : article.id}) }}" class="btn btn-outline-success">Modifier</a> </td>
-                        <td> <a href="{{ path('articles.delete', {id : article.id}) }}" class="btn btn-danger">Supprimer</a> </td>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 justify-content-center">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            ID
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Nom de l'article
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Marque
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Prix
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="sr-only">modifier</span>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="sr-only">supprimer</span>
+                        </th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <div class="navigation d-flex justify-content-center">
-                {{ knp_pagination_render(articles) }}
+                    </thead>
+                    <tbody>
+                    {% for article in articles %}
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ article.id }}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ article.name }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ article.marque }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ article.prix }}$
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <a href="{{ path('articles.update', {id : article.id}) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <a href="{{ path('articles.delete', {id : article.id}) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Supprimer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="inline-flex items-center -space-x-px">
+                    {{ knp_pagination_render(articles) }}
+                </div>
             </div>
         {% else %}
         <div class="card text-white bg-warning mb-3 " style="max-width: 20rem;">

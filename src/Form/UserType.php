@@ -18,13 +18,9 @@ class UserType extends AbstractType
         $builder
             ->add('fullname',TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'w-11/12 focus:outline-none focus:text-gray-600 p-2',
                     'minlength' => 2,
                     'maxlength' => 50,
-                ],
-                'label' => 'Nom complet',
-                'label_attr' => [
-                    'class' => 'form-label mt-2'
                 ],
                 'constraints' => [
                     new Assert\NotBlank([
@@ -40,13 +36,9 @@ class UserType extends AbstractType
             ])
             ->add('pseudo',TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'w-11/12 focus:outline-none focus:text-gray-600 p-2',
                     'minlength' => 2,
                     'maxlength' => 50,
-                ],
-                'label' => 'Pseudo',
-                'label_attr' => [
-                    'class' => 'form-label mt-2'
                 ],
                 'constraints' => [
                     new Assert\NotBlank([
@@ -62,14 +54,10 @@ class UserType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'w-11/12 focus:outline-none focus:text-gray-600 p-2',
                     'minlength' => 2,
                     'maxlength' => 180,
                     'readonly' => "true"
-                ],
-                'label' => 'Email',
-                'label_attr' => [
-                    'class' => 'form-label mt-2'
                 ],
                 'constraints' => [
                     new Assert\NotBlank([
@@ -80,12 +68,6 @@ class UserType extends AbstractType
                         'message' => 'Veuillez saisir une adresse email valide',
                     ]),
 
-                ]
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Valider',
-                'attr' => [
-                    'class' => 'btn btn-primary mt-2'
                 ]
             ])
         ;

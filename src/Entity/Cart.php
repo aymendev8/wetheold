@@ -20,7 +20,7 @@ class Cart
     private ?User $id_user = null;
 
     #[ORM\Column]
-    private ?int $prix_total = null;
+    private ?int $prix_total = 0;
 
     #[ORM\OneToMany(mappedBy: 'cart', targetEntity: ProductCart::class, orphanRemoval: true)]
     private Collection $product;

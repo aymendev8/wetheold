@@ -24,7 +24,9 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($this->getUser());
+            $user = $form->getData();
+
+            $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Votre profil a bien été mis à jour');
             return $this->redirectToRoute('user.profil');
@@ -66,4 +68,18 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/profil/delete', name: 'user.delete')]
+    public function delete(EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('security.login');
+        }
+        $manager->remove($user);
+        $manager->flush();
+        $this->addFlash('success', 'Votre compte a bien été supprimé');
+        return $this->redirectToRoute('homepage');
+    }
 }
+

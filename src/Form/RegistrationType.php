@@ -24,10 +24,6 @@ class RegistrationType extends AbstractType
                     'minlength' => 2,
                     'maxlength' => 50,
                 ],
-                'label' => 'Nom complet',
-                'label_attr' => [
-                    'class' => 'form-label mt-2'
-                ],
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Veuillez saisir un nom complet',

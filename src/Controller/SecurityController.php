@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\User;
 use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManager;

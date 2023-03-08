@@ -16,7 +16,7 @@
             $builder
                 ->add('plainPassword', PasswordType::class, [
                     'attr' => [
-                        'class' => 'form-control'
+                        'class' => 'w-11/12 focus:outline-none focus:text-gray-600 p-2'
                     ],
                     'label' =>  'Mot de passe actuel',
                     'label_attr' => [
@@ -32,7 +32,7 @@
                     'type' => PasswordType::class,
                     'first_options' => [
                         'attr' => [
-                            'class' => 'form-control'
+                            'class' => 'w-11/12 focus:outline-none focus:text-gray-600 p-2'
                         ],
                         'label' => 'Nouveau mot de passe',
                         'label_attr' => [
@@ -41,18 +41,12 @@
                     ],
                     'second_options' => [
                         'attr' => [
-                            'class' => 'form-control'
+                            'class' => 'w-11/12 focus:outline-none focus:text-gray-600 p-2'
                         ],
                         'label' => 'Confirmer le nouveau mot de passe',
                         'label_attr' => [
                             'class' => 'form-label mt-2'
                         ],
-                    ]
-                ])
-                ->add('submit', SubmitType::class, [
-                    'label' => 'Valider mot de passe',
-                    'attr' => [
-                        'class' => 'btn btn-primary mt-2'
                     ]
                 ])
             ;
