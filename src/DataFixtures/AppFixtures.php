@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Cart;
 use App\Entity\User;
 use App\Entity\Articles;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -29,6 +30,9 @@ class AppFixtures extends Fixture
                 ->setRoles(['ROLE_USER'])
                 ->setPlainPassword('Password');
             $manager->persist($user);
+            $cart = new Cart();
+            $cart->setIdUser($user);
+            $manager->persist($cart);
         }
 
     for ($i = 0; $i < 10; $i++) {

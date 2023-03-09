@@ -46,7 +46,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\OneToOne(mappedBy: 'id_user', cascade: ['persist', 'remove'])]
-    #[Assert\NotNull]
     private ?Cart $cart = null;
 
 

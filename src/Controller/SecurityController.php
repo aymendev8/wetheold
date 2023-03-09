@@ -37,9 +37,15 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $user->setRoles(['ROLE_USER']);
-            $user = $form->getData();
             $manager->persist($user);
             $manager->flush();
+
+
+            $cart = new Cart();
+            $cart->setIdUser($user);
+            $manager->persist($cart);
+            $manager->flush();
+
             $this->addFlash('success', 'Votre compte a bien été créé');
             return $this->redirectToRoute('security.login');
         }
