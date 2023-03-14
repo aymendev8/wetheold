@@ -13,9 +13,11 @@
         #[Route('/', name: 'homepage', methods: ['GET'])]
         public function index(ArticlesRepository $repository) : Response
         {
-            $articles = $repository->findAll();
+            $newarticles = $repository->findBy([], ['id' => 'DESC'], 4);
+            $bestarticles = $repository->findBy([], ['id' => 'ASC'], 4);
            return $this->render('home.html.twig', [
-               'articles' => $articles
+               'articles' => $newarticles,
+                'bestarticles' => $bestarticles
            ]);
         }
     }

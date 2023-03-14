@@ -20,9 +20,13 @@ class RegistrationType extends AbstractType
         $builder
             ->add('fullname',TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white',
                     'minlength' => 2,
                     'maxlength' => 50,
+                ],
+                'label' => 'Nom complet',
+                'label_attr' => [
+                    'class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'
                 ],
                 'constraints' => [
                     new Assert\NotBlank([
@@ -38,13 +42,13 @@ class RegistrationType extends AbstractType
             ])
             ->add('pseudo',TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white',
                     'minlength' => 2,
                     'maxlength' => 50,
                 ],
                 'label' => 'Pseudo',
                 'label_attr' => [
-                    'class' => 'form-label mt-2'
+                    'class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'
                 ],
                 'constraints' => [
                     new Assert\NotBlank([
@@ -60,13 +64,13 @@ class RegistrationType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white',
                     'minlength' => 2,
                     'maxlength' => 180,
                 ],
                 'label' => 'Email',
                 'label_attr' => [
-                    'class' => 'form-label mt-2'
+                    'class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'
                 ],
                 'constraints' => [
                     new Assert\NotBlank([
@@ -82,28 +86,22 @@ class RegistrationType extends AbstractType
                 'type' => PasswordType::class,
                 'first_options' => [
                     'attr' => [
-                        'class' => 'form-control'
+                        'class' => 'w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mb'
                     ],
                     'label' => 'Mot de passe',
                     'label_attr' => [
-                        'class' => 'form-label mt-2'
+                        'class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'
                     ],
                 ],
                 'second_options' => [
                     'attr' => [
-                        'class' => 'form-control'
+                        'class' => 'w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white'
                     ],
                     'label' => 'Confirmer le mot de passe',
                     'label_attr' => [
-                        'class' => 'form-label mt-2'
+                        'class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'
                     ],
                 ],
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'S\'inscrire',
-                'attr' => [
-                    'class' => 'btn btn-primary mt-2'
-                ]
             ])
         ;
     }
