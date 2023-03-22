@@ -53,6 +53,7 @@ class Articles
     #[Assert\NotNull]
     private ?\DateTimeInterface $updatedAt;
 
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();

@@ -175,7 +175,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = $plainPassword;
     }
 
-    public function getcard(): ?Cart
+    public function getcart(): ?Cart
     {
         return $this->cart;
     }

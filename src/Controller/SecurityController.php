@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cart;
 use App\Entity\User;
+use App\Entity\Wishlist;
 use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,6 +45,12 @@ class SecurityController extends AbstractController
             $cart = new Cart();
             $cart->setIdUser($user);
             $manager->persist($cart);
+            $manager->flush();
+
+            $wishlist = new Wishlist();
+            $wishlist->setUser($user);
+            $wishlist->setNbArticles(0);
+            $manager->persist($wishlist);
             $manager->flush();
 
             $this->addFlash('success', 'Votre compte a bien été créé');
