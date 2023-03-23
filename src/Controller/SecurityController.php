@@ -49,7 +49,6 @@ class SecurityController extends AbstractController
 
             $wishlist = new Wishlist();
             $wishlist->setUser($user);
-            $wishlist->setNbArticles(0);
             $manager->persist($wishlist);
             $manager->flush();
 
