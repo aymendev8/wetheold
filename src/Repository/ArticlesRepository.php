@@ -63,5 +63,23 @@ class ArticlesRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findNameKeyword(string $keyword): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.name LIKE :keyword')
+            ->setParameter('keyword', '%' . $keyword . '%')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    public function findmarqueKeyword(string $keyword): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.marque LIKE :keyword')
+            ->setParameter('keyword', '%' . $keyword . '%')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 }

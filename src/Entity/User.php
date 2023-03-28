@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -51,6 +53,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Wishlist $wishlist = null;
 
+    #[ORM\ManyToMany(targetEntity: Commandes::class, mappedBy: 'user')]
+    private Collection $commandes;
+
 
     /**
      * @return null
@@ -62,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct(){
         $this->createdAt = new \DateTimeImmutable();
+        $this->commandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -208,6 +214,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->wishlist = $wishlist;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commandes>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commandes $commande): self
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commandes $commande): self
+    {
+        if ($this->commandes->removeElement($commande)) {
+            $commande->removeUser($this);
+        }
 
         return $this;
     }

@@ -71,7 +71,13 @@
                         <span>Prix Total</span>
                         <span>{{prixtotal}} €</span>
                     </div>
+                    {% if products|length > 0 %}
+                    <a href="{{ path("cart.checkout") }}">
+                        <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Finaliser l'achat</button>
+                    </a>
+                    {% else %}
                     <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Finaliser l'achat</button>
+                    {% endif %}
                 </div>
             </div>
 

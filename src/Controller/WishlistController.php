@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Articles;
 use App\Repository\UserRepository;
+use App\Repository\WishlistRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,24 +13,36 @@ use Symfony\Component\Routing\Annotation\Route;
 class WishlistController extends AbstractController
 {
     #[Route('/wishlist', name: 'wishlist')]
-    public function index(): Response
+    public function index(WishlistRepository $wishlistRepository): Response
     {
-        $wishlist = $this->getUser()->getWishlist();
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('security.login');
+        }
         return $this->render('pages/wishlist/index.html.twig', [
-            'controller_name' => 'WishlistController',
+            'wishlist' => $wishlistRepository->findOneBy(['user' => $this->getUser()]),
         ]);
     }
     #[Route('/{name}/addwishlist', name: 'wishlist.add')]
-    public function add(Articles $article, UserRepository $userRepository, EntityManagerInterface $manager, ): Response
+    public function add(Articles $article, WishlistRepository $wishlistRepository, EntityManagerInterface $manager, ): Response
     {
-        if ($this->getUser() != null) {
-            $user = $userRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
-            //dump($user->getWishlist());die;
-            $wishlist =
-            $wishlist = $user->getWishlist();
+        $wishlist = $wishlistRepository->findOneBy(['user' => $this->getUser()]);
+        if ($this->getUser() != null && !$wishlist->getProducts()->contains($article)) {
             $wishlist->addProduct($article);
             $manager->flush();
+            return $this->redirectToRoute('wishlist');
         }
-        return $this->redirectToRoute('wishlist', ['name' => $article->getName()]);
+        return $this->redirectToRoute('wishlist');
+    }
+
+    #[Route('/{name}/removewishlist', name: 'wishlist.remove')]
+    public function remove(Articles $article, WishlistRepository $wishlistRepository, EntityManagerInterface $manager, ): Response
+    {
+        if ($this->getUser() != null) {
+            $wishlist = $wishlistRepository->findOneBy(['user' => $this->getUser()]);
+            $wishlist->removeProduct($article);
+            $manager->flush();
+            return $this->redirectToRoute('wishlist');
+        }
+        return $this->redirectToRoute('security.login');
     }
 }

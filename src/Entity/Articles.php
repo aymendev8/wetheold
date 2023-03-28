@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity("name")]
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: ArticlesRepository::class)]
-class Articles
+class Articles implements \Serializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -178,6 +178,42 @@ class Articles
     }
 
 
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->name,
+            $this->marque,
+            $this->prix,
+            $this->imageFile,
+            $this->imageName,
+            $this->description,
+            $this->createdAt,
+            $this->updatedAt,
+        ]);
+    }
 
+    public function unserialize(string $data)
+    {
+        return unserialize($data);
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            $this->id,
+            $this->name,
+            $this->marque,
+            $this->prix,
+            $this->imageName,
+            $this->description,
+            $this->createdAt,
+            $this->updatedAt,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+    }
 }
 

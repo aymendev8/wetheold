@@ -42,7 +42,9 @@ class UserController extends AbstractController
         if (!$user) {
             return $this->redirectToRoute('security.login');
         }
-        return $this->render('pages/user/commande.html.twig');
+        return $this->render('pages/user/commande.html.twig', [
+            'commandes' => $user->getCommandes(),
+        ]);
     }
     #[Route('/profil/password', name: 'user.password',methods: ['GET', 'POST'])]
     public function modifmdp(Request $request, EntityManagerInterface $manager): Response
