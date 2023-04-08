@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Commandes;
+use App\Repository\CarteBancaireRepository;
 use App\Repository\CartRepository;
 use App\Repository\CommandesRepository;
 use App\Repository\ProductCartRepository;
@@ -46,38 +47,47 @@ class CartController extends AbstractController
 
     }
     #[Route('checkout', name: 'cart.checkout')]
-    public function checkout(Request $request, UserRepository $userRepository, EntityManagerInterface $manager, CommandesRepository $commandesRepository): Response
+    public function checkout(Request $request, UserRepository $userRepository, EntityManagerInterface $manager, CommandesRepository $commandesRepository, CarteBancaireRepository $carteBancaireRepository): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('security.login');
         }
 
-        if ($request->isMethod('POST')){
-            $commande = new Commandes();
-            $user = $userRepository->findOneBy(['id' => $this->getUser()->getId()]);
-            $cart = $user->getcart();
-            $products_cards = $cart->getProduct();
-            $commande->addUser($userRepository->find($this->getUser()));
-            $commande->setEmail($request->request->get('email'));
-            $commande->setFullname($request->request->get('fullname'));
-            $commande->setVille($request->request->get('ville'));
-            $commande->setAdresse($request->request->get('addresse'));
-            $commande->setCodePostal($request->request->get('codepostal'));
-            foreach ($products_cards as $products_card) {
-                $commande->addArticle($products_card->getProduct());
+        $carte = $carteBancaireRepository->findAll()[0];
+
+        if ($request->isMethod('POST')) {
+            if ($request->request->get('numero') == $carte->getNumero() && intval($request->request->get('cvc')) == $carte->getCvc() && $request->request->get('expiration') == $carte->getExpiration()) {
+                $commande = new Commandes();
+                $user = $userRepository->findOneBy(['id' => $this->getUser()->getId()]);
+                $cart = $user->getcart();
+                $products_cards = $cart->getProduct();
+                $commande->addUser($userRepository->find($this->getUser()));
+                $commande->setEmail($request->request->get('email'));
+                $commande->setFullname($request->request->get('fullname'));
+                $commande->setVille($request->request->get('ville'));
+                $commande->setAdresse($request->request->get('addresse'));
+                $commande->setCodePostal($request->request->get('codepostal'));
+                foreach ($products_cards as $products_card) {
+                    $commande->addArticle($products_card->getProduct());
+                }
+                $commande->setPrixTotal($cart->getPrixTotal());
+                $manager->persist($commande);
+
+                for ($i = 0; $i < count($products_cards); $i++) {
+                    $manager->remove($products_cards[$i]);
+                }
+                $user->getcart()->setPrixTotal(0);
+
+                $manager->flush();
+
+                return $this->redirectToRoute('cart.confirmation', ['id' => $commande->getId()]);
+            } else {
+                #dd($request->request->get('numero'), $carte->getNumero(), intval($request->request->get('cvc')), $carte->getCvc(), $request->request->get('expiration'), $carte->getExpiration());
+                $this->addFlash('danger', 'Vos informations bancaires sont incorrectes');
+                return $this->redirectToRoute('cart.checkout');
             }
-            $commande->setPrixTotal($cart->getPrixTotal());
-            $manager->persist($commande);
-
-            for ($i = 0; $i < count($products_cards); $i++) {
-                $manager->remove($products_cards[$i]);
-            }
-            $user->getcart()->setPrixTotal(0);
-
-            $manager->flush();
-
-            return $this->redirectToRoute('cart.confirmation', ['id' => $commande->getId()]);
         }
+
         if ($commandesRepository->findAll() != null) {
             $commande = $commandesRepository->findAll()[count($commandesRepository->findAll()) - 1];
         } else {

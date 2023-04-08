@@ -83,7 +83,7 @@ class ArticleType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                     'minlength' => 2,
-                    'maxlength' => 500,
+                    'maxlength' => 1000,
                 ],
                 'label_attr' => [
                     'class' => 'form-label mt-2'

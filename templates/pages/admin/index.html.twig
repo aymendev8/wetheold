@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - {{ app.user.pseudo }} {% endblock %}
+
+{% block body %}
+    <div class="px-4 pt-6">
+        <div class="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+            <!-- Main widget -->
+            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex-shrink-0">
+                        <span class="text-xl font-bold leading-none text-gray-900 sm:text-2xl dark:text-white">{{ total }} €</span>
+                        <h3 class="text-base font-light text-gray-500 dark:text-gray-400">Ventes au total</h3>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <span class="text-xl font-bold leading-none text-gray-900 sm:text-2xl dark:text-white">{{ nbcommandes }} </span>
+                        <h3 class="text-base font-light text-gray-500 dark:text-gray-400">Commandes</h3>
+                    </div>
+                </div>
+                <div id="main-chart"></div>
+            </div>
+            <!--Tabs widget -->
+        <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3">
+            <div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div class="w-full">
+                    <h3 class="text-base font-normal text-gray-500 dark:text-gray-400">produits </h3>
+                    <span class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">{{ nb_articles }}</span>
+                    <p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400">
+                        <a href="{{ path("articles.read") }}" style="text-decoration: none" class="hover:text-blue-500"> voir en détails </a>
+                    </p>
+                </div>
+                <div class="w-full" id="new-products-chart"></div>
+            </div>
+            <div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div class="w-full">
+                    <h3 class="text-base font-normal text-gray-500 dark:text-gray-400">Users</h3>
+                    <span class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">{{ nb_utilisateurs }}</span>
+                    <p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400">
+                        <a href="{{ path("app_user_crud_index") }}"style="text-decoration: none;" class="hover:text-blue-500" > voir en détails </a>
+                    </p>
+                </div>
+                <div class="w-full" id="week-signups-chart"></div>
+            </div>
+        </div>
+        </div>
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div class="flex flex-col mt-6">
+                    <div class="overflow-x-auto rounded-lg">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden shadow sm:rounded-lg">
+                                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                                    <thead class="bg-gray-50 dark:bg-gray-700">
+                                    <tr>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                            Commande
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                            Date et heure
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                            Montant
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                            id de la commande
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                            Paiement
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                                            Statut
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="bg-white dark:bg-gray-800">
+                                    {% for commande in commandes  %}
+                                        <tr>
+                                            <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                                                commande de  <span class="font-semibold">{{ commande.fullname }}</span>
+                                            </td>
+                                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                                {{ commande.createdAt|date('d/m/Y H:i') }}
+                                            </td>
+                                            <td class="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+                                                {{ commande.prixtotal|number_format(2, ',', ' ') }} €
+                                            </td>
+                                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                                #{{ commande.id }}
+                                            </td>
+                                            <td class="inline-flex items-center p-4 space-x-2 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                                <span>••• {{ random(0, 9999)|format('%04d') }}</span>
+                                            </td>
+                                            <td class="p-4 whitespace-nowrap">
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500"> complété </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+{% endblock %}

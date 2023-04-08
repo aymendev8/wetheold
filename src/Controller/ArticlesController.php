@@ -17,8 +17,11 @@ class ArticlesController extends AbstractController
     #[Route('/articles', name: 'articles.read')]
     public function read(ArticlesRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
-        if(!$this->getUser()){
+        if (!$this->getUser()) {
             return $this->redirectToRoute('security.login');
+        }
+        if (count($this->getUser()->getRoles()) == 1) {
+            return $this->redirectToRoute('homepage');
         }
         $articles = $paginator->paginate(
             $repository->findAll(),
@@ -33,8 +36,11 @@ class ArticlesController extends AbstractController
     #[Route('/articles/modifier/{id}', name: 'articles.update')]
     public function update(Articles $article, Request $request, EntityManagerInterface $manager): Response
     {
-        if(!$this->getUser()){
+        if (!$this->getUser()) {
             return $this->redirectToRoute('security.login');
+        }
+        if (count($this->getUser()->getRoles()) == 1) {
+            return $this->redirectToRoute('homepage');
         }
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
@@ -53,8 +59,11 @@ class ArticlesController extends AbstractController
     #[Route('/articles/supprimer/{id}', name: 'articles.delete')]
     public function delete(Articles $article, EntityManagerInterface $manager): Response
     {
-        if(!$this->getUser()){
+        if (!$this->getUser()) {
             return $this->redirectToRoute('security.login');
+        }
+        if (count($this->getUser()->getRoles()) == 1) {
+            return $this->redirectToRoute('homepage');
         }
         $manager->remove($article);
         $manager->flush();
@@ -65,8 +74,11 @@ class ArticlesController extends AbstractController
     #[Route('/articles/ajouter', name: 'articles.create')]
     public function create(Request $request, EntityManagerInterface $manager): Response
     {
-        if(!$this->getUser()){
+        if (!$this->getUser()) {
             return $this->redirectToRoute('security.login');
+        }
+        if (count($this->getUser()->getRoles()) == 1) {
+            return $this->redirectToRoute('homepage');
         }
         $article = new Articles();
         $form = $this->createForm(ArticleType::class);
@@ -84,14 +96,4 @@ class ArticlesController extends AbstractController
         ]);
     }
 
-    #[Route('/articles/{id}', name: 'articles.show')]
-    public function show(Articles $article): Response
-    {
-        if(!$this->getUser()){
-            return $this->redirectToRoute('security.login');
-        }
-        return $this->render('pages/articles/show.html.twig', [
-            'article' => $article
-        ]);
-    }
 }

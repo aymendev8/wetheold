@@ -16,6 +16,9 @@ class SizeController extends AbstractController
     #[Route('/', name: 'app_size_index', methods: ['GET'])]
     public function index(SizeRepository $sizeRepository): Response
     {
+        if (count($this->getUser()->getRoles()) == 1) {
+            return $this->redirectToRoute('homepage');
+        }
         return $this->render('size/index.html.twig', [
             'sizes' => $sizeRepository->findAll(),
         ]);
@@ -24,6 +27,9 @@ class SizeController extends AbstractController
     #[Route('/new', name: 'app_size_new', methods: ['GET', 'POST'])]
     public function new(Request $request, SizeRepository $sizeRepository): Response
     {
+        if (count($this->getUser()->getRoles()) == 1) {
+            return $this->redirectToRoute('homepage');
+        }
         $size = new Size();
         $form = $this->createForm(SizeType::class, $size);
         $form->handleRequest($request);
@@ -43,6 +49,7 @@ class SizeController extends AbstractController
     #[Route('/{id}', name: 'app_size_show', methods: ['GET'])]
     public function show(Size $size): Response
     {
+        @$this->isGranted('ROLE_ADMIN');
         return $this->render('size/show.html.twig', [
             'size' => $size,
         ]);
@@ -51,6 +58,9 @@ class SizeController extends AbstractController
     #[Route('/{id}/edit', name: 'app_size_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Size $size, SizeRepository $sizeRepository): Response
     {
+        if (count($this->getUser()->getRoles()) == 1) {
+            return $this->redirectToRoute('homepage');
+        }
         $form = $this->createForm(SizeType::class, $size);
         $form->handleRequest($request);
 
@@ -69,6 +79,9 @@ class SizeController extends AbstractController
     #[Route('/{id}', name: 'app_size_delete', methods: ['POST'])]
     public function delete(Request $request, Size $size, SizeRepository $sizeRepository): Response
     {
+        if (count($this->getUser()->getRoles()) == 1) {
+            return $this->redirectToRoute('homepage');
+        }
         if ($this->isCsrfTokenValid('delete'.$size->getId(), $request->request->get('_token'))) {
             $sizeRepository->remove($size, true);
         }

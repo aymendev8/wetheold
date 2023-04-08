@@ -40,9 +40,9 @@ class Articles implements \Serializable
     #[Assert\NotBlank]
     private ?float $prix = null;
 
-    #[ORM\Column(length: 500)]
+    #[ORM\Column(length: 1000)]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 2, max: 500)]
+    #[Assert\Length(min: 2, max: 1000)]
     private ?string $description = null;
 
     #[ORM\Column(type: 'datetime_immutable')]
